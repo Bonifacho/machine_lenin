@@ -163,21 +163,21 @@ git merge main
 
 ---
 
-### 🔧 Fase 1: Preprocesamiento de Datos (`1_preprocesamiento.py`) — *Hacer primero antes de dividir*
+### ✅ Fase 1: Preprocesamiento de Datos (`1_preprocesamiento.py`) *(Completado)*
 **Responsable:** Ambos (o Integrante A) en rama `feat/preprocesamiento` → Merge a `main`.
 
 #### Tareas de implementación
-- [ ] Cargar `datos/datos_obesidad.csv` usando `pathlib.Path` (para que funcione sin importar desde dónde se ejecute).
-- [ ] Separar características `X` (16 columnas) y variable objetivo `y` (`NObeyesdad`).
-- [ ] Codificar la variable objetivo `y` de texto a enteros `0..6` mediante `LabelEncoder` (o un diccionario ordenado explícito) e imprimir en consola el mapeo exacto clase ↔ número.
-- [ ] Dividir en **80% Train / 20% Test** con **`random_state=412`** (exigido por el taller) y `stratify=y` (para mantener la proporción de las 7 clases en Train y Test).
-- [ ] Identificar columnas numéricas (8) y categóricas (8) en `X`.
-- [ ] **Imputación (`SimpleImputer`):**
+- [x] Cargar `datos/datos_obesidad.csv` usando `pathlib.Path` (para que funcione sin importar desde dónde se ejecute).
+- [x] Separar características `X` (16 columnas) y variable objetivo `y` (`NObeyesdad`).
+- [x] Codificar la variable objetivo `y` de texto a enteros `0..6` mediante diccionario ordenado clínico (`MAPEO_CLASES`) e imprimir en consola el mapeo exacto clase ↔ número.
+- [x] Dividir en **80% Train / 20% Test** con **`random_state=412`** (exigido por el taller) y `stratify=y` (para mantener la proporción de las 7 clases en Train y Test).
+- [x] Identificar columnas numéricas (8) y categóricas (8) en `X`.
+- [x] **Imputación (`SimpleImputer`):**
   - Numéricas: `SimpleImputer(strategy="median")` (*fit* sobre `X_train`, *transform* sobre `X_train` y `X_test` para evitar fuga de datos).
   - Categóricas: `SimpleImputer(strategy="most_frequent")` (*fit* sobre `X_train`, *transform* sobre `X_train` y `X_test`).
-- [ ] **Codificación One-Hot:** Aplicar `pd.get_dummies(..., drop_first=True, dtype=int)` asegurando que `X_train` y `X_test` queden exactamente con las mismas columnas y en el mismo orden (`X_test.reindex(columns=X_train.columns, fill_value=0)`).
-- [ ] **Escalado numérico (`StandardScaler`):** Ajustar (`fit_transform`) sobre las 8 columnas numéricas de `X_train` y transformar (`transform`) sobre `X_test`.
-- [ ] Exportar los 4 archivos a `datos/`:
+- [x] **Codificación One-Hot:** Aplicar `pd.get_dummies(..., drop_first=True, dtype=int)` asegurando que `X_train` y `X_test` queden exactamente con las mismas columnas y en el mismo orden (`X_test.reindex(columns=X_train.columns, fill_value=0)`).
+- [x] **Escalado numérico (`StandardScaler`):** Ajustar (`fit_transform`) sobre las 8 columnas numéricas de `X_train` y transformar (`transform`) sobre `X_test`.
+- [x] Exportar los 4 archivos a `datos/`:
   - `datos/X_train.csv`
   - `datos/X_test.csv`
   - `datos/y_train.csv`
@@ -185,12 +185,12 @@ git merge main
 
 #### 🧪 Tests de validación de Fase 1 (ejecutar antes del merge a `main`)
 Correr `python 1_preprocesamiento.py` y verificar con un script rápido o comando en terminal que:
-- [ ] Existen los 4 archivos en `datos/` y no están vacíos.
-- [ ] **Split exacto 80/20:** `X_train` tiene ~1,688 filas y `X_test` tiene ~423 filas; `len(X_train) == len(y_train)` y `len(X_test) == len(y_test)`.
-- [ ] **Cero valores nulos:** `isna().sum().sum() == 0` en los 4 CSVs.
-- [ ] **Columnas alineadas:** `list(X_train.columns) == list(X_test.columns)` y todos los `dtypes` son numéricos (`int`/`float`, sin columnas `object` ni `bool` sueltas).
-- [ ] **Escalado correcto:** En `X_train`, las 8 columnas numéricas tienen media ≈ `0.0` y desviación estándar ≈ `1.0`.
-- [ ] **Objetivo válido:** `y_train` e `y_test` contienen exactamente las 7 clases (`0` a `6`) en proporciones similares.
+- [x] Existen los 4 archivos en `datos/` y no están vacíos.
+- [x] **Split exacto 80/20:** `X_train` tiene 1,688 filas y `X_test` tiene 423 filas; `len(X_train) == len(y_train)` y `len(X_test) == len(y_test)`.
+- [x] **Cero valores nulos:** `isna().sum().sum() == 0` en los 4 CSVs.
+- [x] **Columnas alineadas:** `list(X_train.columns) == list(X_test.columns)` y todos los `dtypes` son numéricos (`int`/`float`, sin columnas `object` ni `bool` sueltas).
+- [x] **Escalado correcto:** En `X_train`, las 8 columnas numéricas tienen media ≈ `0.0` y desviación estándar ≈ `1.0`.
+- [x] **Objetivo válido:** `y_train` e `y_test` contienen exactamente las 7 clases (`0` a `6`) en proporciones similares.
 
 > [!IMPORTANT]
 > Una vez pasen todos estos checks, hacer commit de `1_preprocesamiento.py` **y de los 4 CSV generados en `datos/`** hacia `main`. A partir de este momento, Integrante A e Integrante B trabajan en paralelo.
