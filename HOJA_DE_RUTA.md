@@ -261,15 +261,15 @@ Antes de hacer Pull Request a `main`, verificar:
 
 ---
 
-### 📝 Fase 5: `README.md` e Informe/Presentación
+### ✅ Fase 5: `README.md` e Informe/Presentación *(Completado)*
 **Responsable:** Integrante B en rama `feat/docs-informe` (en paralelo con Fase 4).
 
-- [ ] Redactar `README.md` completo con:
+- [x] Redactar `README.md` completo con:
   - Pregunta de negocio y descripción del dataset (`datos_obesidad.csv`).
   - Decisiones de preprocesamiento (`SimpleImputer`, One-Hot Encoding, `StandardScaler`, split 80/20 `random_state=412`).
   - Instrucciones de instalación (`uv`) y ejecución de los 4 scripts.
   - Tabla de resultados comparativos y conclusiones técnicas.
-- [ ] Preparar el informe/diapositivas para la sustentación (cubriendo: contexto de negocio, preprocesamiento, Scikit-Learn vs TensorFlow, métricas y conclusión).
+- [x] Preparar el informe/diapositivas para la sustentación (`Presentación taller ML obesidad.pptx` auditada y verificada al 100%, cubriendo: contexto de negocio, preprocesamiento, Scikit-Learn vs TensorFlow, métricas y conclusión).
 
 ---
 
