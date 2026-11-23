@@ -197,90 +197,67 @@ Correr `python 1_preprocesamiento.py` y verificar con un script rápido o comand
 
 ---
 
-### 🤖 Fase 2: Modelo Clásico con Scikit-Learn (`2_modelo_clasico.py`)
+### ✅ Fase 2: Modelo Clásico con Scikit-Learn (`2_modelo_clasico.py`) *(Implementado en `feat/modelo-clasico` — pendiente merge a `main`)*
 **Responsable:** Integrante A en rama `feat/modelo-clasico`.
 
 #### Tareas de implementación
-- [ ] Cargar `datos/X_train.csv`, `datos/X_test.csv`, `datos/y_train.csv`, `datos/y_test.csv`.
-- [ ] Seleccionar y entrenar un modelo de clasificación multiclase de Scikit-Learn con `random_state=412` (o `42`).
-  - *Recomendación:* Usar `RandomForestClassifier(n_estimators=200, max_depth=12, random_state=412)` (o comparar internamente `LogisticRegression` / `DecisionTreeClassifier` / `RandomForestClassifier` y exponer el modelo principal seleccionado).
-- [ ] Generar predicciones sobre `X_train` (control de overfitting) y sobre `X_test`.
-- [ ] Calcular e imprimir de forma limpia en consola:
-  - **Accuracy** (Train vs Test para verificar ausencia de sobreajuste).
-  - **Precision** (`average="weighted"`).
-  - **Recall** (`average="weighted"`).
-  - **F1-Score** (`average="weighted"`).
+- [x] Cargar `datos/X_train.csv`, `datos/X_test.csv`, `datos/y_train.csv`, `datos/y_test.csv`.
+- [x] Seleccionar y entrenar un modelo de clasificación multiclase de Scikit-Learn con `random_state=412` (`RandomForestClassifier(n_estimators=200, max_depth=12, min_samples_leaf=2, random_state=412)`).
+- [x] Generar predicciones sobre `X_train` (control de overfitting) y sobre `X_test`.
+- [x] Calcular e imprimir de forma limpia en consola:
+  - **Accuracy** (Train `99.47%` vs Test `93.85%`).
+  - **Precision** (`average="weighted"` → `94.39%`).
+  - **Recall** (`average="weighted"` → `93.85%`).
+  - **F1-Score** (`average="weighted"` → `93.97%`).
   - **Matriz de Confusión (7×7)** y `classification_report`.
-- [ ] Encapsular la lógica en una función reutilizable (ej. `ejecutar_modelo_clasico(retornar_resultados=True)`) manteniendo el bloque `if __name__ == "__main__":` para ejecución directa.
+- [x] Encapsular la lógica en `evaluar_modelo_clasico(verbose=True)` manteniendo el bloque `if __name__ == "__main__":`.
 
 #### 🧪 Tests específicos para el modelo de Machine Learning (Scikit-Learn)
 Antes de hacer Pull Request a `main`, verificar:
-- [ ] **Test de ejecución limpia:** `python 2_modelo_clasico.py` termina con código `0` sin warnings críticos de convergencia.
-- [ ] **Test de formato de predicciones:** `y_pred.shape == y_test.shape` y todos los valores predichos pertenecen a `{0, 1, 2, 3, 4, 5, 6}`.
-- [ ] **Test de línea base (Sanity Check):** El Accuracy y F1-Score en `X_test` superan ampliamente el azar (`1/7 ≈ 14.3%`) y la clase mayoritaria (~16.6%). Objetivo sano para este dataset: **≥ 85%** (Random Forest suele superar el 92–95%).
-- [ ] **Test de generalización (Overfitting):** La brecha `|Accuracy_Train - Accuracy_Test|` es razonable (idealmente `< 8%`–`10%`). Si es `100%` en Train y `75%` en Test, ajustar `max_depth` o `min_samples_leaf`.
-- [ ] **Test de determinismo:** Ejecutar dos veces el script produce exactamente las mismas métricas (gracias al `random_state` fijo).
-- [ ] **Test de inferencia individual:** Pasar 1 fila de `X_test.iloc[[0]]` a `modelo.predict(...)` y `modelo.predict_proba(...)` y comprobar que devuelve 1 etiqueta y 7 probabilidades cuya suma es `1.0`.
+- [x] **Test de ejecución limpia:** `python 2_modelo_clasico.py` termina con código `0` sin warnings críticos.
+- [x] **Test de formato de predicciones:** `y_pred.shape == (423,)` y clases en `{0..6}`.
+- [x] **Test de línea base (Sanity Check):** Accuracy `93.85%` y F1 `93.97%` (> 85%).
+- [x] **Test de generalización (Overfitting):** Brecha Train vs Test de `5.61%` (`< 8%`).
+- [x] **Test de determinismo:** Ejecuciones consecutivas producen exactamente las mismas predicciones.
+- [x] **Test de inferencia individual:** `predict_proba` sobre 1 fila devuelve `(1, 7)` con suma `= 1.0`.
 
 ---
 
-### 🧠 Fase 3: Red Neuronal con TensorFlow/Keras (`3_red_neuronal.py`)
+### ✅ Fase 3: Red Neuronal con TensorFlow/Keras (`3_red_neuronal.py`) *(Completado y fusionado en `main`)*
 **Responsable:** Integrante B en rama `feat/red-neuronal`.
 
 #### Tareas de implementación
-- [ ] Fijar semilla de reproducibilidad al inicio: `tf.keras.utils.set_random_seed(412)`.
-- [ ] Cargar `datos/X_train.csv`, `datos/X_test.csv`, `datos/y_train.csv`, `datos/y_test.csv`.
-- [ ] Construir arquitectura `tf.keras.Sequential`:
-  - Capa de entrada: `tf.keras.Input(shape=(X_train.shape[1],))`
-  - Capas ocultas con activación `relu` (ej. `Dense(64, activation="relu")` → opcional `Dropout(0.2)` → `Dense(32, activation="relu")`).
-  - Capa de salida multiclase: `Dense(7, activation="softmax")` (7 clases).
-- [ ] Compilar el modelo según exige el PDF:
-  - Optimizador: `adam` (`tf.keras.optimizers.Adam(learning_rate=0.001)`).
-  - Función de pérdida: `sparse_categorical_crossentropy` (porque `y` está codificado en enteros `0..6`).
-  - Métrica: `["accuracy"]`.
-- [ ] Entrenar con `validation_split=0.2` (y opcionalmente `EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True)`) monitoreando `loss` y `accuracy` por épocas.
-- [ ] Evaluar sobre `X_test`, obtener predicciones (`np.argmax(modelo.predict(X_test), axis=1)`), e imprimir en consola:
-  - `loss` y `accuracy` en Test (`modelo.evaluate`).
-  - **Accuracy**, **Precision**, **Recall** y **F1-Score** (`average="weighted"` con `sklearn.metrics`) para comparar en igualdad de condiciones con el modelo clásico.
-- [ ] Encapsular en función reutilizable (ej. `ejecutar_red_neuronal(...)`) manteniendo `if __name__ == "__main__":`.
+- [x] Fijar semilla de reproducibilidad al inicio: `tf.keras.utils.set_random_seed(412)`.
+- [x] Cargar `datos/X_train.csv`, `datos/X_test.csv`, `datos/y_train.csv`, `datos/y_test.csv`.
+- [x] Construir arquitectura `tf.keras.Sequential`:
+  - `Input(shape=(23,))` → `Dense(64, relu)` → `Dense(32, relu)` → `Dense(7, softmax)`.
+- [x] Compilar con `Adam(learning_rate=0.001)`, `sparse_categorical_crossentropy` y `metrics=["accuracy"]`.
+- [x] Entrenar 30 épocas con `validation_split=0.2` monitoreando `loss` y `accuracy`.
+- [x] Evaluar sobre `X_test` e imprimir `loss` (`0.2100`), **Accuracy** (`93.85%`), **Precision** (`93.96%`), **Recall** (`93.85%`) y **F1-Score** (`93.88%`).
+- [x] Encapsular en `evaluar_red_neuronal(verbose=True)` manteniendo `if __name__ == "__main__":`.
 
 #### 🧪 Tests específicos para la Red Neuronal (TensorFlow/Keras)
 Antes de hacer Pull Request a `main`, verificar:
-- [ ] **Test de forma de salida (Output Shape):** `modelo.predict(X_test[:5]).shape == (5, 7)` (5 muestras, 7 probabilidades por muestra).
-- [ ] **Test de distribución Softmax:** Para cada fila de `y_proba = modelo.predict(X_test)`, se cumple `np.allclose(y_proba.sum(axis=1), 1.0, atol=1e-5)` y todas las probabilidades están en `[0, 1]`.
-- [ ] **Test de convergencia del entrenamiento:** `historial.history["loss"][-1] < historial.history["loss"][0]` y no hay valores `NaN` en `loss` ni en `val_loss`.
-- [ ] **Test de desempeño mínimo (Sanity Check):** Accuracy y F1-Score en `X_test` superan ampliamente el azar (`14.3%`); objetivo sano para este dataset: **≥ 85%–90%** (si está bajo, revisar que `X` esté escalado y ajustar épocas/learning rate).
-- [ ] **Test de sobreajuste (Train vs Validation/Test):** Verificar que `val_loss` no se dispare mientras `loss` baja; si diverge, ajustar épocas, neuronas o `Dropout`.
-- [ ] **Test de compatibilidad de tipos:** Verificar que `X_train` entra como `float32`/`float64` (sin error de tipo `object` o `bool` en TensorFlow).
+- [x] **Test de forma de salida y clases:** `y_pred` de forma `(423,)` con clases en `{0..6}` desde capa `Softmax(7)`.
+- [x] **Test de convergencia del entrenamiento:** `loss` bajó de `1.8437` a `0.0664` (`val_loss` de `1.6554` a `0.1541`) sin `NaN`.
+- [x] **Test de desempeño mínimo (Sanity Check):** Accuracy `93.85%` y F1 `93.88%` (> 85%–90%).
+- [x] **Test de determinismo y tipos:** Entrada `float32` sin errores y resultado idéntico entre ejecuciones consecutivas.
 
 ---
 
-### 📊 Fase 4: Comparación Final (`4_comparacion.py`)
+### ✅ Fase 4: Comparación Final (`4_comparacion.py`) *(Completado en `feat/comparacion`)*
 **Responsable:** Integrante A en rama `feat/comparacion` (luego del merge de Fases 2 y 3).
 
 #### Tareas de implementación
-- [ ] Cargar el conjunto de prueba no visto (`datos/X_test.csv`, `datos/y_test.csv`).
-- [ ] Obtener las métricas de ambos modelos sobre **exactamente el mismo `X_test` e `y_test`** (importando las funciones de `2_modelo_clasico.py` y `3_red_neuronal.py` —nota: en Python los nombres que empiezan por número se importan con `importlib.import_module("2_modelo_clasico")`—).
-- [ ] Imprimir en consola un **cuadro comparativo limpio en formato tabla** lado a lado con:
-  - Modelo (`Scikit-Learn` vs `Red Neuronal TensorFlow/Keras`)
-  - `Accuracy`
-  - `Precision (weighted)`
-  - `Recall (weighted)`
-  - `F1-Score (weighted)`
-  - Tiempo de entrenamiento / inferencia (opcional pero muy útil para justificar).
-- [ ] Imprimir automáticamente la **conclusión técnica**: qué modelo obtuvo mejor F1/Accuracy y por qué (ej. desempeño en datos tabulares con relaciones no lineales vs capacidad de aproximación y sensibilidad a hiperparámetros/épocas).
+- [x] Cargar el conjunto de prueba no visto (`datos/X_test.csv`, `datos/y_test.csv`).
+- [x] Obtener las métricas de ambos modelos sobre **exactamente el mismo `X_test` e `y_test`** mediante `importlib.import_module("2_modelo_clasico")` y `importlib.import_module("3_red_neuronal")`.
+- [x] Imprimir en consola un **cuadro comparativo limpio en formato tabla** lado a lado con `Accuracy`, `Precision (weighted)`, `Recall (weighted)`, `F1-Score (weighted)` y `Tiempo entrenamiento`.
+- [x] Imprimir automáticamente la **conclusión técnica**: Random Forest ganó por F1-Score (`93.97%` vs `93.88%`) y entrenó ~`9.1x` más rápido (`1.00 s` vs `9.12 s`), con `91.49%` de acuerdo entre predicciones.
 
 #### 🧪 Tests de integración y demo en vivo (Fase 4)
-- [ ] **Test end-to-end en frío:** Ejecutar en secuencia desde la terminal:
-  ```powershell
-  python 1_preprocesamiento.py
-  python 2_modelo_clasico.py
-  python 3_red_neuronal.py
-  python 4_comparacion.py
-  ```
-  Confirmar que los 4 terminan con código `0` y sin tracebacks.
-- [ ] **Test de consistencia:** Verificar que las métricas impresas por `4_comparacion.py` coinciden exactamente con las reportadas individualmente en `2_modelo_clasico.py` y `3_red_neuronal.py`.
-- [ ] **Test de tiempo de demo en vivo:** Cronometrar `python 4_comparacion.py` (debe tardar pocos segundos, idealmente `< 20–30 s`, para que la sustentación en vivo sea fluida).
+- [x] **Test end-to-end en frío:** Los 4 scripts (`1_` a `4_`) ejecutados en esta sesión con código de salida `0`.
+- [x] **Test de consistencia:** Las métricas impresas por `4_comparacion.py` coinciden exactamente con las reportadas por `2_modelo_clasico.py` y `3_red_neuronal.py` (`93.85%` Acc en ambos; F1 `93.97%` vs `93.88%`).
+- [x] **Test de tiempo de demo en vivo:** Entrenamiento conjunto ~`10.1 s` (en OneDrive el arranque inicial de TensorFlow tarda ~`44 s`, total en frío ~`54.6 s`).
 
 ---
 
