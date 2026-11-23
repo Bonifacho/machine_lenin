@@ -273,15 +273,11 @@ Antes de hacer Pull Request a `main`, verificar:
 
 ---
 
-### 🎤 Fase 6: Verificación Final, Empaquetado y Ensayo de Sustentación
+### 🎤 Fase 6: Verificación Final, Empaquetado y Ensayo de Sustentación *(Lista técnica completada ✅ — falta ensayo/exposición)*
 **Responsable:** Ambos (juntos antes del **24 de noviembre, 16:00 h**).
 
-- [ ] Verificar que **no hay cuadernos `.ipynb`** en la entrega (prohibido por el PDF).
-- [ ] Verificar que la estructura final coincide exactamente con la del PDF (`datos/` con los 5 CSVs + `1_` a `4_` + `README.md`).
-- [ ] Comprimir la carpeta del proyecto (excluyendo `.venv/` y `__pycache__/` para que no pese cientos de MB).
-- [ ] Hacer una **prueba limpia** descomprimiendo el `.zip` en otra carpeta o ejecutando `python 4_comparacion.py` desde cero.
-- [ ] Ensayar la sustentación oral (**5 a 8 minutos por estudiante**), repartiendo quién explica qué y preparando respuestas a preguntas típicas del docente:
-  - *¿Por qué `StandardScaler` y no `MinMaxScaler`? ¿Por qué ajustar solo con `X_train`?*
-  - *¿Por qué `Softmax` + `sparse_categorical_crossentropy` en la salida?*
-  - *¿Cómo verificaron que no hubiera overfitting?*
-  - *¿Por qué uno de los dos modelos rindió mejor en este dataset tabular?*
+- [x] Verificar que **no hay cuadernos `.ipynb`** en la entrega (`IPYNB_COUNT: 0`).
+- [x] Verificar que la estructura final coincide exactamente con la del PDF (`datos/` con los 5 CSVs + `1_` a `4_` + `README.md` + `requirements.txt` + `Presentación taller ML obesidad.pptx`).
+- [x] Comprimir la carpeta del proyecto (`entrega_taller_ml_601.zip`, `579,836 bytes`, excluyendo `.venv/`, `__pycache__/` y guías internas).
+- [x] Hacer una **prueba limpia** descomprimiendo el `.zip` en otra carpeta y ejecutando `python 4_comparacion.py` desde cero (`exit code 0`).
+- [ ] Ensayar la sustentación oral (**5 a 8 minutos por estudiante**) usando `GUIA_SUSTENTACION.md`, repartiendo quién explica qué y repasando el banco de preguntas del docente.

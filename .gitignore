@@ -17,3 +17,6 @@ env/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Paquetes de entrega
+*.zip
