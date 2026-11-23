@@ -4,8 +4,8 @@ Taller Final Integrador de Machine Learning (601).
 
 **Equipo**
 
-- Integrante A: _(nombre completo)_
-- Integrante B: _(nombre completo)_
+- Integrante A: Andrés Felipe Bonilla Aya
+- Integrante B: Omar Bravo Montaña
 
 ---
 
@@ -18,6 +18,8 @@ Es un problema de **clasificación multiclase** (7 clases).
 ## 2. Dataset
 
 Archivo: `datos/datos_obesidad.csv`
+
+Fuente: UCI Machine Learning Repository, dataset 544, "Estimation of obesity levels based on eating habits and physical condition" (Palechor y De la Hoz Manotas, Data in Brief, 2019).
 
 - **2.111 filas** y 17 columnas: **16 variables de entrada** + 1 variable objetivo.
 - **0 % de valores nulos**. El docente aprobó trabajar con las 16 variables y sin nulos.
